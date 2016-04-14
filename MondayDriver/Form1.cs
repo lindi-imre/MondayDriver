@@ -83,7 +83,41 @@ namespace MondayDriver
 
         private void openButton_Click(object sender, EventArgs e)
         {
+            listBox1.Items.Clear();
+            DirectoryInfo dinfo = new DirectoryInfo(textBox1.Text);
 
+            files = dinfo.GetFiles();
+            directories = dinfo.GetDirectories();
+
+            Array.Sort(files, delegate (FileInfo f1, FileInfo f2) {
+                return f1.Name.CompareTo(f2.Name);
+            });
+
+            Array.Sort(directories, delegate (DirectoryInfo f1, DirectoryInfo f2) {
+                return f1.Name.CompareTo(f2.Name);
+            });
+
+            foreach (DirectoryInfo directory in directories)
+            {
+                listBox1.Items.Add(directory.Name);
+            }
+
+            foreach (FileInfo file in files)
+            {
+                listBox1.Items.Add(file.Name);
+            }
+        }
+
+        private void deleteButton_Click(object sender, EventArgs e)
+        {
+            if (File.Exists(textBox1.Text))
+            {
+                File.Delete(textBox1.Text);
+            }
+            else if (Directory.Exists(textBox1.Text))
+            {
+                Directory.Delete(textBox1.Text);
+            }
         }
     }
 }
